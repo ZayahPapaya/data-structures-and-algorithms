@@ -1,5 +1,7 @@
 'use strict';
 
+const { applyFixes } = require("eslint/lib/linter/source-code-fixer");
+
 /* ------------------------------------------------------------------------------------------------
 
 CHALLENGE 1 - Review
@@ -53,7 +55,15 @@ let characters = [
 ];
 
 const sortByChildren = (charArray) => {
-  // Solution code here...
+  let arr = charArray.sort((a,b) => {
+    if(a.children.length < b.children.length){
+      return -1;
+    }
+    if (a.children.length === b.children.length && a.house < b.house){
+      return -1;
+    }
+  });
+  return arr;
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -64,7 +74,7 @@ Write a function named containsW that takes in a string. This function should us
 ------------------------------------------------------------------------------------------------ */
 
 const containsW = (str) => {
-  let pattern = /(w)/gm;
+  const pattern = /(w)/gm;
   return pattern.test(str);
 };
 
@@ -81,7 +91,7 @@ For example:
 ------------------------------------------------------------------------------------------------ */
 
 const isNum = (input) => {
-  let pattern = /[0-9]/gm;
+  const pattern = /[0-9]/gm;
   return pattern.test(input);
 };
 
@@ -93,7 +103,7 @@ Write a function named containsWorld that takes in a string or number of any len
 ------------------------------------------------------------------------------------------------ */
 
 const containsWorld = (input) => {
-  let pattern = /(world)/gm;
+  const pattern = /(world)/gm;
   return pattern.test(input);
 };
 
@@ -106,7 +116,9 @@ Return an array containing all the matches.
 ------------------------------------------------------------------------------------------------ */
 
 const isCapitalized = (str) => {
-  return str.match(/\b[A-Z]+\b/g); // TODO: This is wrong
+  const pattern = /\b[A-Z][a-z]*/g;
+  let words = str.match(pattern);
+  return words || [];
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -116,7 +128,8 @@ Write a function named citiesAtoJ that takes in an array of city names and uses 
 ------------------------------------------------------------------------------------------------ */
 
 const citiesAtoJ = (arr) => {
-  // Solution code here...
+  const pattern = /^[A-J]/gm;
+  return arr.filter(value => value.match(pattern));
 };
 
 /* ------------------------------------------------------------------------------------------------
