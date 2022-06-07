@@ -62,15 +62,16 @@ For example, 'abcdefg' returns 'bdf'
 ------------------------------------------------------------------------------------------------ */
 
 const onlyOddChars = (str) => {
-  let arr = str.split('');
-  let length = arr.length;
-  let result = [];
-  for(let i = 0; i < length; i++) {
-    if (i % 2 === 1) {
-      result.push(arr[i]);
-    }
-  }
-  return result.join('');
+  // let arr = str.split('');
+  // let length = arr.length;
+  // let result = [];
+  // for(let i = 0; i < length; i++) {
+  //   if (i % 2 === 1) {
+  //     result.push(arr[i]);
+  //   }
+  // }
+  // return result.join('');
+  return str.split('').filter((value, idx) => idx % 2 === 1).join('');
 };
 
 /* ------------------------------------------------------------------------------------------------
