@@ -8,13 +8,7 @@ function mergeSort(array) {
 
 function merge(left, right) {
   let array = []
-  while (left.length && right.length) {
-    if (left[0] < right[0]) {
-      array.push(left.shift());
-    } else {
-      array.push(right.shift())
-    }
-  }
+  while (left.length && right.length)  left[0] < right[0] ? array.push(left.shift()) : array.push(right.shift())
   return [...array, ...left, ...right]
 }
 module.exports = {
