@@ -18,26 +18,38 @@ export interface Location {
   name: string;
 }
 
-let dhammer: Node<Item, Location> = {
-  value: { name: 'Dragon Warhammer' },
-  edges: [],
+export class Graph<NV, EV> {
+  nodes: Set<Node<NV, EV>>;
+  constructor() {
+    this.nodes = new Set();
+  }
+  addNode = (value: Node<NV, EV>): Node<NV, EV> => {
+      this.nodes.add(value);
+      return value;
+  }
+  getNodes = (): Set<Node<NV, EV>> => {
+    return this.nodes
+  }
+
+  getNeighbors = (value: Node<NV, EV>): Set<Node<NV, EV>> => {
+    return new Set(value.edges.map((edge) => edge.nodes[1]));
+  }
+
+  addEdge = (left: Node<NV, EV>, right: Node<NV, EV>, edge: EV): void => {
+    const neighbor: Edge<NV, EV> = {
+      value: edge,
+      nodes: [left, right],
+    }
+    left.edges.push(neighbor);
+    right.edges.push(neighbor)
+  
+  }
+  size = (): number => {
+    return this.nodes.size;
+  }
 }
 
-let gmaul: Node<Item, Location> = {
-  value: { name: 'Granite Maul' },
-  edges: [],
-}
 
-let wilderness: Edge<Item, Location> = {
-  value: { name: 'Wilderness' },
-  nodes: [dhammer, gmaul],
-}
 
-let pk: Edge<Item, Location> = {
-  value: { name: 'PvP' },
-  nodes: [gmaul, dhammer],
-}
 
-export const neighbors = (origin: Node<Item, Location>): Set<Node<Item, Location>> => {
-  return new Set(origin.edges.map((edge) => edge.nodes[1]));
-}
+
