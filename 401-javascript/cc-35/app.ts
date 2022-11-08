@@ -24,8 +24,8 @@ export class Graph<NV, EV> {
     this.nodes = new Set();
   }
   addNode = (value: Node<NV, EV>): Node<NV, EV> => {
-      this.nodes.add(value);
-      return value;
+    this.nodes.add(value);
+    return value;
   }
   getNodes = (): Set<Node<NV, EV>> => {
     return this.nodes
@@ -42,10 +42,46 @@ export class Graph<NV, EV> {
     }
     left.edges.push(neighbor);
     right.edges.push(neighbor)
-  
   }
+
   size = (): number => {
     return this.nodes.size;
+  }
+
+  bread = (loaf: Set<Node<NV, EV>>): any => {
+    let visited: any = new Set();
+    let result = [];
+    let queue: any = [];
+    if (loaf.size > 0) {
+      const iter = loaf.values();
+      queue.push(iter.next().value);
+    } else {
+      return result;
+    }
+
+
+    while (queue.length > 0) {
+      let current: Node<NV, EV> = queue.shift();
+      console.log('current node', current)
+      if (visited.has(current.value)) {
+        console.log('continue')
+        continue;
+      } else {
+        visited.add(current.value);
+      }
+      console.log('edges', current)
+      if (current.edges.length > 0) {
+        current.edges.forEach(edge => {
+          edge.nodes.forEach(node => {
+            queue.push(node)
+          })
+        })
+      }
+    }
+    visited.forEach((item: any) => {
+      result.push(item.name);
+    })
+    return result;
   }
 }
 
