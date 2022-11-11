@@ -1,3 +1,4 @@
+import { continueStatement } from "@babel/types";
 
 
 export interface Node<NV, EV> {
@@ -23,9 +24,13 @@ export class Graph<NV, EV> {
   constructor() {
     this.nodes = new Set();
   }
-  addNode = (value: Node<NV, EV>): Node<NV, EV> => {
-    this.nodes.add(value);
-    return value;
+  addNode = (value: NV): Node<NV, EV> => {
+    let node: Node<NV, EV> = {
+      value,
+      edges: []
+    }
+    this.nodes.add(node);
+    return node;
   }
   getNodes = (): Set<Node<NV, EV>> => {
     return this.nodes
@@ -50,7 +55,7 @@ export class Graph<NV, EV> {
 
   bread = (loaf: Set<Node<NV, EV>>): any => {
     let visited: any = new Set();
-    let result = [];
+    let result: any = [];
     let queue: any = [];
     if (loaf.size > 0) {
       const iter = loaf.values();
@@ -62,14 +67,11 @@ export class Graph<NV, EV> {
 
     while (queue.length > 0) {
       let current: Node<NV, EV> = queue.shift();
-      console.log('current node', current)
       if (visited.has(current.value)) {
-        console.log('continue')
         continue;
       } else {
         visited.add(current.value);
       }
-      console.log('edges', current)
       if (current.edges.length > 0) {
         current.edges.forEach(edge => {
           edge.nodes.forEach(node => {
@@ -78,13 +80,50 @@ export class Graph<NV, EV> {
         })
       }
     }
-    visited.forEach((item: any) => {
-      result.push(item.name);
-    })
+    visited.forEach((item: any) => result.push(item))
     return result;
   }
+
+  // businessTrip = (route: Node<string, number>[]): number | null => {
+  //   let tracker: any = Array.from(this.nodes).find((city: any) => city === route[0]);
+  //   if (!tracker) return null;
+  //   let cost: number = 0;
+  //   let visited: any = new Set();
+  //   let queue: any = [];
+  //   while (queue.length > 0) {
+  //     let current: Node<string, number> = queue.shift();
+  //     if (visited.has(current.value)) continue;
+  //     visited.add(current.value);
+  //     if (current.edges.length > 0) {
+  //       current.edges.forEach(edge => {
+  //         edge.nodes.forEach(node => {
+  //           if (route.find(element => element.value === node.value)) {
+  //             queue.push(node);
+  //             cost = edge.value + cost;
+  //           }
+  //         })
+  //       })
+  //     }
+  //   }
+  //   return cost;
+  // }
+
 }
 
+export const businessTrip = (graph: Graph<string, number>, route: Node<string, number>[]): number | null => {
+  let cost = 0;
+  let tracker = route.shift()!;
+  while(route.length > 0) {
+    let neighbors = graph.getNeighbors(tracker);
+    let next = route.shift()!;
+    console.log(next)
+    console.log(neighbors)
+    if(!neighbors.has(next)) return null;
+    cost += tracker.edges.find((edge: Edge<string, number>) =>  edge.nodes[1] === next)?.value ?? 0;
+    tracker = next;
+  }
+  return cost;
+}
 
 
 

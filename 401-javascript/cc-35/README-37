@@ -1,0 +1,13 @@
+# Algorithm / Explanation
+
+businessTrip is a function that takes in a target graph, and an array of nodes on a route to travel through the graph. It returns a price made up of the edge values, or null if given path is impossible.
+
+## Testing
+
+npm i
+&&
+npm test to check if each test passes for the different methods
+
+## Whiteboard
+
+![cc37.png](cc37)
